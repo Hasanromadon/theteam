@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { firebase } from './firebase';
+import Routes from './Route';
+import './Resources/css/app.css';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const App = (props) => {
+  return (
+    // send user information to routes. the props copy from onAuthStateChanged
+    <Routes {...props} />
+  );
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//listener to check loggin user
+firebase.auth().onAuthStateChanged((user) => {
+  ReactDOM.render(<App user={user} />, document.getElementById('root'));
+});
