@@ -1,12 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import firebase from '../../../firebase';
 import { ListItem } from '@material-ui/core';
-import {
-  showSuccessToast,
-  showErrorToast,
-  logOutHanlder,
-} from '../../utils/tools';
+import { logOutHanlder } from '../../utils/tools';
 
 const AdminNav = () => {
   const links = [

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import AdminLayout from '../../HOC/AdminLayout';
 const Dashboard = (props) => {
   console.log(props);

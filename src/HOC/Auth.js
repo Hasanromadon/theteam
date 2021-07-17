@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { firebase } from '../firebase';
 
