@@ -1,21 +1,13 @@
 import React from 'react';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { CityLogo } from '../utils/tools';
+import { CityLogo, logOutHanlder } from '../utils/tools';
 import { firebase } from '../../firebase';
 
 const Header = (props) => {
   // user props received from Routes
 
   const { user } = props;
-
-  const logOutHanlder = async () => {
-    try {
-      await firebase.auth().signOut();
-    } catch (error) {
-      alert(error);
-    }
-  };
 
   return (
     <AppBar
