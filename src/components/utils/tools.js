@@ -4,6 +4,7 @@ import mcitylogo from '../../Resources/images/logos/manchester_city_logo.png';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { firebase } from '../../firebase';
+import { FormHelperText } from '@material-ui/core';
 export const CityLogo = (props) => {
   const template = (
     <div
@@ -66,4 +67,22 @@ export const Tag = (props) => {
   } else {
     return template;
   }
+};
+
+export const textErrorHelper = (formik, values) => ({
+  error: formik.errors[values] && formik.touched[values],
+  helperText:
+    formik.errors[values] && formik.touched[values]
+      ? formik.errors[values]
+      : null,
+});
+export const SelectErrorHelper = (formik, values) => {
+  if (formik.errors[values] && formik.touched[values]) {
+    return <FormHelperText>{formik.errors[values]}</FormHelperText>;
+  }
+  return false;
+};
+
+export const SelectIsError = (formik, values) => {
+  return formik.errors[values] && formik.touched[values];
 };

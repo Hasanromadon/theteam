@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './components/Admin/Dashboard';
 import AuthGuard from './HOC/Auth';
+import AdminPlayers from './components/Admin/players';
+import AddEditPlayers from './components/Admin/players/addEditPlayers';
 
 const Routes = ({ user }) => {
   //the props data received from index.js
@@ -24,6 +26,21 @@ const Routes = ({ user }) => {
           component={(props) => <SignIn {...props} user={user} />}
         />
         <Route exact path="/dashboard" component={AuthGuard(Dashboard)} />
+        <Route
+          exact
+          path="/admin_player/"
+          component={AuthGuard(AdminPlayers)}
+        />
+        <Route
+          exact
+          path="/admin_players/add_player"
+          component={AuthGuard(AddEditPlayers)}
+        />
+        <Route
+          path="/admin_players/edit_player/:playerid"
+          exact
+          component={AuthGuard(AddEditPlayers)}
+        />
       </Switch>
       <ToastContainer />
       <Footer />

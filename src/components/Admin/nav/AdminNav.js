@@ -11,7 +11,7 @@ const AdminNav = () => {
 
   const renderItem = () =>
     links.map((link) => (
-      <Link to={link.linkTo}>
+      <Link key={link.title} to={link.linkTo}>
         <ListItem button className="admin_nav_link">
           {link.title}
         </ListItem>
