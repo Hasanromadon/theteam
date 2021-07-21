@@ -32,8 +32,11 @@ const Header = (props) => {
         <Link to="/">
           <Button color="inherit">The Team</Button>
         </Link>
+        <Link to="/the_matches">
+          <Button color="inherit">Matches</Button>
+        </Link>
 
-        {user && (
+        {user ? (
           <>
             <Link to="/dashboard">
               <Button color="inherit">Dashboard</Button>
@@ -43,6 +46,10 @@ const Header = (props) => {
               Log out
             </Button>
           </>
+        ) : (
+          <Link to="/signin">
+            <Button color="inherit">Sign In</Button>
+          </Link>
         )}
       </Toolbar>
     </AppBar>

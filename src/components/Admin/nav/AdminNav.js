@@ -5,8 +5,8 @@ import { logOutHanlder } from '../../utils/tools';
 
 const AdminNav = () => {
   const links = [
-    { title: 'Matches', linkTo: '/admin_mathes' },
-    { title: 'Player', linkTo: '/admin_player' },
+    { title: 'Matches', linkTo: '/Admin_Matches' },
+    { title: 'Player', linkTo: '/Admin_players' },
   ];
 
   const renderItem = () =>

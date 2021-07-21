@@ -10,16 +10,34 @@ import Dashboard from './components/Admin/Dashboard';
 import AuthGuard from './HOC/Auth';
 import AdminPlayers from './components/Admin/players';
 import AddEditPlayers from './components/Admin/players/addEditPlayers';
-
+import TheTeam from './components/the_team';
+import AdminMatches from './components/Admin/matches/index';
+import AddEditMatch from './components/Admin/matches/addEditMatch';
+import TheMatches from './components/theMatches';
+import NotFound from './components/NotFound';
 const Routes = ({ user }) => {
   //the props data received from index.js
-  console.log(user);
 
   return (
     <Router>
       <Header user={user} />
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route
+          path="/admin_matches/edit_match/:matchid"
+          exact
+          component={AuthGuard(AddEditMatch)}
+        />
+        <Route
+          path="/admin_matches/add_match"
+          exact
+          component={AuthGuard(AddEditMatch)}
+        />
+        <Route
+          path="/Admin_matches"
+          exact
+          component={AuthGuard(AdminMatches)}
+        />
+
         <Route
           exact
           path="/signin"
@@ -28,7 +46,7 @@ const Routes = ({ user }) => {
         <Route exact path="/dashboard" component={AuthGuard(Dashboard)} />
         <Route
           exact
-          path="/admin_player/"
+          path="/Admin_players"
           component={AuthGuard(AdminPlayers)}
         />
         <Route
@@ -41,6 +59,10 @@ const Routes = ({ user }) => {
           exact
           component={AuthGuard(AddEditPlayers)}
         />
+        <Route path="/the_team" exact component={TheTeam} />
+        <Route path="/the_matches" exact component={TheMatches} />
+        <Route exact path="/" component={Home} />
+        <Route component={NotFound} />
       </Switch>
       <ToastContainer />
       <Footer />

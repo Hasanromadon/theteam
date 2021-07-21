@@ -1,8 +1,8 @@
 import React from 'react';
 import AdminLayout from '../../HOC/AdminLayout';
+import AdminMatches from './matches';
 const Dashboard = (props) => {
-  console.log(props);
-  return <AdminLayout>dashboard</AdminLayout>;
+  return <AdminMatches />;
 };
 
 export default Dashboard;

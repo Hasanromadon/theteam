@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AdminLayout from '../../../HOC/AdminLayout';
+import Fileuploader from '../../utils/fileUploader';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -25,12 +26,14 @@ const defaultValues = {
   lastname: '',
   number: '',
   position: '',
+  image: '',
 };
 
 const AddEditPlayers = (props) => {
   const [formType, setFormType] = useState('');
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(defaultValues);
+  const [defaultImg, setDefaultImg] = useState('');
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -43,12 +46,24 @@ const AddEditPlayers = (props) => {
         .min(0, 'The minimum is cero')
         .max(100, 'The max is 100'),
       position: Yup.string().required('This input is required'),
+      image: Yup.string().required('Image is required'),
     }),
 
     onSubmit: (values) => {
       submitForm(values);
     },
   });
+
+  const updateImageName = (filename) => {
+    // data didapat dari props FileUploader lalu ditambhkan field formik
+    formik.setFieldValue('image', filename);
+  };
+
+  //akan berjalan untuk hapus gambar
+  const resetImage = () => {
+    formik.setFieldValue('image', '');
+    setDefaultImg('');
+  };
 
   useEffect(() => {
     const param = props.match.params.playerid;
@@ -57,7 +72,20 @@ const AddEditPlayers = (props) => {
         .doc(param)
         .get()
         .then((snapshoot) => {
+          // GET data and insert to value
           if (snapshoot.data()) {
+            // check strage dengan nama file yang didapat dari snapshoot dan ambil url nya
+            firebase
+              .storage()
+              .ref('players')
+              .child(snapshoot.data().image)
+              .getDownloadURL()
+              .then((url) => {
+                //update form formik
+                console.log(snapshoot.data().image);
+                updateImageName(snapshoot.data().image);
+                setDefaultImg(url);
+              });
           } else {
             showErrorToast('Nothing was not found');
           }
@@ -88,10 +116,12 @@ const AddEditPlayers = (props) => {
         .catch((error) => showErrorToast(error));
     } else {
       playersCollection
-        .doc(props.match.params.played)
+        .doc(props.match.params.playerid)
         .update(dataToSumbit)
         .then(() => {
           showSuccessToast('Player Updated');
+          formik.resetForm();
+          props.history.push('/Admin_players');
         })
         .catch((error) => showErrorToast('Error Update'))
         .finally(() => setLoading(false));
@@ -103,7 +133,17 @@ const AddEditPlayers = (props) => {
       <div className="editplayers_dialog_wrapper">
         <div>
           <form onSubmit={formik.handleSubmit}>
-            image
+            {/* IMAGE UPLOAD */}
+            <FormControl>
+              <Fileuploader
+                dir="players"
+                filename={(filename) => updateImageName(filename)}
+                defaultImg={defaultImg} //url
+                defaultImgName={formik.values.image} //kirim balik nama file nya untuk kebutuhan edit
+                resetImage={() => resetImage()}
+              />
+            </FormControl>
+
             <hr />
             <h4>Player Info</h4>
             <div className="mb-5">
@@ -151,18 +191,18 @@ const AddEditPlayers = (props) => {
                 <Select
                   id="position"
                   variant="outlined"
-                  placeholder="Add Number"
                   {...formik.getFieldProps('position')}
                   // copy all return value from textError
                   displayEmpty
                   error={SelectIsError(formik, 'position')}
                 >
+                  {console.log({ ...formik.getFieldProps('position') })}
                   <MenuItem value="" disabled>
                     Select position
                   </MenuItem>
                   <MenuItem value="Keeper">Keeper</MenuItem>
                   <MenuItem value="Defence">Defence</MenuItem>
-                  <MenuItem value="MidField">MidField</MenuItem>
+                  <MenuItem value="Midfield">MidField</MenuItem>
                   <MenuItem value="Striker">Striker</MenuItem>
                 </Select>
                 {SelectErrorHelper(formik, 'position')}
